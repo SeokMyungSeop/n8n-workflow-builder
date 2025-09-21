@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import express from "express";
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { HttpServerTransport } from "@modelcontextprotocol/sdk/server/http.js";  // HTTP transport import
+import { McpServer } from "@modelcontextprotocol/sdk/server.js";
+import { HttpServerTransport } from "@modelcontextprotocol/sdk/http";
 import { z } from "zod";
 import axios from "axios";
 
@@ -799,19 +799,13 @@ server.tool(
 
 // HTTP 서버 실행
 async function main() {
-  const port = process.env.PORT || 3000;
+  const port = Number(process.env.PORT) || 3000;
   const app = express();
   app.use(express.json());
 
-  app.post("/mcp", async (req, res) => {
-    try {
-      const result = await server.receive(req.body);   // ✅ handleRequest → receive
-      res.json(result);
-    } catch (err) {
-      console.error("MCP error:", err);
-      res.status(500).json({ error: String(err) });
-    }
-  });
+  // ✅ MCP Transport 연결
+  const transport = new HttpServerTransport({ app, path: "/mcp" });
+  await server.connect(transport);
 
   app.listen(port, "0.0.0.0", () => {
     console.log(`🚀 MCP server running on http://0.0.0.0:${port}/mcp`);
