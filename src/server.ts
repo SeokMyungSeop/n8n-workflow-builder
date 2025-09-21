@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import express from "express";
-import { McpServer } from "@modelcontextprotocol/sdk/server.js";
-import { HttpServerTransport } from "@modelcontextprotocol/sdk/http";
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { HttpServerTransport } from "@modelcontextprotocol/sdk/server/http.js";
 import { z } from "zod";
 import axios from "axios";
 
@@ -811,8 +811,3 @@ async function main() {
     console.log(`🚀 MCP server running on http://0.0.0.0:${port}/mcp`);
   });
 }
-
-main().catch((error) => {
-  console.error("Server error:", error);
-  process.exit(1);
-});
