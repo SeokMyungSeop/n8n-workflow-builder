@@ -26,6 +26,7 @@
     "test:ci:coverage": "jest --config=jest.config.ci.cjs --coverage",
     "test:core": "jest --testPathIgnorePatterns='credentials.test.ts|tags.test.ts|newWorkflowTools.test.ts'",
     "test:mock-errors": "jest --testPathPattern='credentials.test.ts|tags.test.ts|newWorkflowTools.test.ts'"
+    "heroku-postbuild": "npm install && npm run build"
 },
   "bin": {
     "n8n-workflow-builder": "build/server-http.js"
