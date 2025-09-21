@@ -11,14 +11,14 @@
       "require": "./build/server.cjs"
     }
   },
-  "scripts": {
+    "scripts": {
     "clean": "rm -rf build build-smithery",
     "build": "tsc && npm run build:rename",
     "build:rename": "find build -name '*.js' -exec sh -c 'mv \"$1\" \"${1%.js}.cjs\"' _ {} \\;",
     "build:smithery": "tsc -p tsconfig.smithery.json",
     "dev": "tsc -w",
     "start": "node build/server.cjs",
-    "prepare": "npm run build",
+    "postinstall": "npm run build",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
