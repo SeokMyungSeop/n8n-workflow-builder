@@ -11,22 +11,22 @@
       "require": "./build/server.cjs"
     }
   },
-    "scripts": {
-    "clean": "rm -rf build build-smithery",
-    "build": "tsc",
-    "dev": "tsc -w",
-    "start": "node build/server-http.js",
-    "postinstall": "npm run build",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "test:integration": "jest --testPathPattern=integration",
-    "test:unit": "jest --testPathPattern=unit",
-    "test:ci": "jest --config=jest.config.ci.cjs",
-    "test:ci:coverage": "jest --config=jest.config.ci.cjs --coverage",
-    "test:core": "jest --testPathIgnorePatterns='credentials.test.ts|tags.test.ts|newWorkflowTools.test.ts'",
-    "test:mock-errors": "jest --testPathPattern='credentials.test.ts|tags.test.ts|newWorkflowTools.test.ts'"
-    "heroku-postbuild": "npm install && npm run build"
+"scripts": {
+  "clean": "rm -rf build build-smithery",
+  "build": "tsc",
+  "dev": "tsc -w",
+  "start": "node build/server-http.js",
+  "postinstall": "npm run build",
+  "test": "jest",
+  "test:watch": "jest --watch",
+  "test:coverage": "jest --coverage",
+  "test:integration": "jest --testPathPattern=integration",
+  "test:unit": "jest --testPathPattern=unit",
+  "test:ci": "jest --config=jest.config.ci.cjs",
+  "test:ci:coverage": "jest --config=jest.config.ci.cjs --coverage",
+  "test:core": "jest --testPathIgnorePatterns='credentials.test.ts|tags.test.ts|newWorkflowTools.test.ts'",
+  "test:mock-errors": "jest --testPathPattern='credentials.test.ts|tags.test.ts|newWorkflowTools.test.ts'",
+  "heroku-postbuild": "npm install && npm run build"
 },
   "bin": {
     "n8n-workflow-builder": "build/server-http.js"
