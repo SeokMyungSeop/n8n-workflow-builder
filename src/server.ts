@@ -1,31 +1,32 @@
 #!/usr/bin/env node
 
+import express from "express";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { HttpServerTransport } from "@modelcontextprotocol/sdk/server/http.js";  // HTTP transport import
 import { z } from "zod";
 import axios from "axios";
 
-// Configuration
-const N8N_HOST = process.env.N8N_HOST || 'http://localhost:5678';
-const N8N_API_KEY = process.env.N8N_API_KEY || '';
+// N8N 설정
+const N8N_HOST = process.env.N8N_HOST || "http://localhost:5678";
+const N8N_API_KEY = process.env.N8N_API_KEY || "";
 
 console.error("N8N API Configuration:");
 console.error("Host:", N8N_HOST);
-console.error("API Key:", N8N_API_KEY ? `${N8N_API_KEY.substring(0, 4)}****` : 'Not set');
+console.error("API Key:", N8N_API_KEY ? `${N8N_API_KEY.substring(0, 4)}****` : "Not set");
 
-// Create axios instance for n8n API
+// axios 인스턴스
 const n8nApi = axios.create({
   baseURL: N8N_HOST,
   headers: {
-    'X-N8N-API-KEY': N8N_API_KEY,
-    'Content-Type': 'application/json'
-  }
+    "X-N8N-API-KEY": N8N_API_KEY,
+    "Content-Type": "application/json",
+  },
 });
 
-// Create MCP server with modern SDK 1.17.0 API
+// MCP 서버 객체 생성
 const server = new McpServer({
   name: "n8n-workflow-builder",
-  version: "0.10.3"
+  version: "0.10.3",
 });
 
 // Register workflow management tools using modern MCP SDK 1.17.0 API
@@ -796,12 +797,18 @@ server.tool(
   }
 );
 
-// Start the server
+// HTTP 서버 실행
 async function main() {
-  const transport = new StdioServerTransport();
+  const port = process.env.PORT || 3000;
+  const app = express();
+  app.use(express.json());
+
+  const transport = new HttpServerTransport({ app, endpoint: "/mcp" });
   await server.connect(transport);
-  console.error("N8N Workflow Builder MCP server v0.10.3 running on stdio");
-  console.error("Modern SDK 1.17.0 with 23 tools: 9 workflow + 3 execution + 7 tag + 3 credential + 1 audit");
+
+  app.listen(port, "0.0.0.0", () => {
+    console.error(`🚀 MCP server running on http://0.0.0.0:${port}/mcp`);
+  });
 }
 
 main().catch((error) => {
