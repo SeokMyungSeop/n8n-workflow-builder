@@ -798,8 +798,6 @@ server.tool(
 );
 
 // HTTP 서버 실행
-import express from "express";
-
 async function main() {
   const port = process.env.PORT || 3000;
   const app = express();
