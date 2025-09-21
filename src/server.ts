@@ -798,20 +798,25 @@ server.tool(
 );
 
 // HTTP 서버 실행
+import express from "express";
+
 async function main() {
   const port = process.env.PORT || 3000;
   const app = express();
   app.use(express.json());
 
-  const transport = new HttpServerTransport({ app, endpoint: "/mcp" });
-  await server.connect(transport);
+  // MCP 엔드포인트
+  app.post("/mcp", async (req, res) => {
+    try {
+      const result = await server.handleRequest(req.body);
+      res.json(result);
+    } catch (err) {
+      console.error("MCP error:", err);
+      res.status(500).json({ error: String(err) });
+    }
+  });
 
   app.listen(port, "0.0.0.0", () => {
-    console.error(`🚀 MCP server running on http://0.0.0.0:${port}/mcp`);
+    console.log(`🚀 MCP server running on http://0.0.0.0:${port}/mcp`);
   });
 }
-
-main().catch((error) => {
-  console.error("Server error:", error);
-  process.exit(1);
-});
