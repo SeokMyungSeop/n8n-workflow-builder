@@ -803,10 +803,9 @@ async function main() {
   const app = express();
   app.use(express.json());
 
-  // MCP 엔드포인트
   app.post("/mcp", async (req, res) => {
     try {
-      const result = await server.handleRequest(req.body);
+      const result = await server.receive(req.body);   // ✅ handleRequest → receive
       res.json(result);
     } catch (err) {
       console.error("MCP error:", err);
@@ -818,3 +817,8 @@ async function main() {
     console.log(`🚀 MCP server running on http://0.0.0.0:${port}/mcp`);
   });
 }
+
+main().catch((error) => {
+  console.error("Server error:", error);
+  process.exit(1);
+});
